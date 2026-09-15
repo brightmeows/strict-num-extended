@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         features: ["", "serde"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup rustfmt and clippy
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -52,7 +52,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         features: ["", "serde"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup rustfmt and clippy
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -82,7 +82,7 @@ jobs:
       matrix:
         features: ["", "serde"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -111,7 +111,7 @@ jobs:
           - thumbv6m-none-eabi      # ARM Cortex-M0
         features: ["", "serde"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
