@@ -260,7 +260,7 @@ mod test_comparison_operations {
         let a = NonNegativeF32::new(1.0).unwrap();
         let b = NonNegativeF32::new(2.0).unwrap();
         assert!(a < b);
-        assert!(a == NonNegativeF32::new(1.0).unwrap());
+        assert_eq!(a, NonNegativeF32::new(1.0).unwrap());
     }
 
     #[test]
