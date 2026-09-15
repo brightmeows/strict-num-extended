@@ -10,7 +10,7 @@ rust-version = "1.85"
 
 # Crates.io Publish Config
 description = "Type-safe finite floating-point types for Rust - eliminate NaN and infinity at compile time"
-repository = "https://github.com/MiyakoMeow/strict-num-extended"
+repository = "https://github.com/brightmeows/strict-num-extended"
 keywords = ["float", "finite", "type-safe", "math", "validation"]
 categories = ["mathematics", "data-structures"]
 readme = "README.md"
