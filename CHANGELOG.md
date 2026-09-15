@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.5.1](https://github.com/brightmeows/strict-num-extended/compare/strict-num-extended-macros-v0.5.0...strict-num-extended-macros-v0.5.1) - 2026-09-15
+
+### Features
+- **(lint)** sync clippy config ([#97](https://github.com/MiyakoMeow/strict-num-extended/pull/97))
+
 ## [0.5.0](https://github.com/MiyakoMeow/strict-num-extended/compare/strict-num-extended-macros-v0.4.3...strict-num-extended-macros-v0.5.0) - 2026-01-12
 
 ### Bug Fixes
