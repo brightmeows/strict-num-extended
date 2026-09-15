@@ -4,11 +4,10 @@
 
 use crate::config::TypeConfig;
 use crate::generator::for_all_constraint_float_types;
-use quote::quote;
 
 /// Generate `ParseFloatError` type and its trait implementations
 pub fn generate_parse_error_type() -> proc_macro2::TokenStream {
-    quote! {
+    code! {
         /// String parsing error
         ///
         /// Contains three possible error variants:
@@ -47,7 +46,7 @@ pub fn generate_parse_error_type() -> proc_macro2::TokenStream {
 
 /// Generate `From` implementations for `ParseFloatError`
 pub fn generate_parse_error_from_impls() -> proc_macro2::TokenStream {
-    quote! {
+    code! {
         // Implement From for ParseFloatError
         impl From<core::num::ParseFloatError> for ParseFloatError {
             fn from(_: core::num::ParseFloatError) -> Self {
@@ -68,7 +67,7 @@ pub fn generate_fromstr_traits(config: &TypeConfig) -> proc_macro2::TokenStream 
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         let struct_name = crate::generator::make_type_alias(type_name, float_type);
 
-        quote! {
+        code! {
             impl core::str::FromStr for #struct_name {
                 type Err = ParseFloatError;
 
@@ -90,5 +89,5 @@ pub fn generate_fromstr_traits(config: &TypeConfig) -> proc_macro2::TokenStream 
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }

@@ -3,7 +3,6 @@
 //! Generates mathematical constants for all constraint types.
 
 use proc_macro2::{Ident, Span};
-use quote::quote;
 
 use crate::config::{ConstraintDef, TypeConfig};
 use crate::generator::for_all_constraint_float_types;
@@ -194,7 +193,7 @@ pub fn generate_constants(config: &TypeConfig) -> proc_macro2::TokenStream {
             .collect();
 
         if applicable_constants.is_empty() {
-            return quote! {};
+            return code! {};
         }
 
         // Generate code for each constant
@@ -208,7 +207,7 @@ pub fn generate_constants(config: &TypeConfig) -> proc_macro2::TokenStream {
                 const_def.f32_expr.map_or_else(
                     || {
                         let v = const_def.literal_value as f32;
-                        quote! { #v }
+                        code! { #v }
                     },
                     |expr| {
                         #[expect(clippy::expect_used)]
@@ -220,7 +219,7 @@ pub fn generate_constants(config: &TypeConfig) -> proc_macro2::TokenStream {
                 const_def.f64_expr.map_or_else(
                     || {
                         let v = const_def.literal_value;
-                        quote! { #v }
+                        code! { #v }
                     },
                     |expr| {
                         #[expect(clippy::expect_used)]
@@ -230,14 +229,14 @@ pub fn generate_constants(config: &TypeConfig) -> proc_macro2::TokenStream {
                 )
             };
 
-            quote! {
+            code! {
                 #[doc = #doc]
                 #[must_use]
                 pub const #name: Self = unsafe { Self::new_unchecked(#value_expr) };
             }
         });
 
-        quote! {
+        code! {
             #[expect(clippy::approx_constant)]
             impl #struct_name {
                 #(#constant_defs)*
@@ -245,7 +244,7 @@ pub fn generate_constants(config: &TypeConfig) -> proc_macro2::TokenStream {
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

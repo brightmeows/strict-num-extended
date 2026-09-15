@@ -1,7 +1,6 @@
 //! Binary arithmetic operations module
 
 use proc_macro2::{Ident, TokenStream as TokenStream2};
-use quote::quote;
 
 use crate::config::{ArithmeticOp, ArithmeticResult, TypeConfig, get_standard_arithmetic_ops};
 use crate::generator::{
@@ -69,7 +68,7 @@ pub fn generate_arithmetic_impls(config: &TypeConfig) -> TokenStream2 {
         },
     );
 
-    quote! {
+    code! {
         #constraint_impls
         #primitive_impls
     }
@@ -95,7 +94,7 @@ fn generate_arithmetic_impl(
 
     if result.is_safe && !rhs_is_primitive && !lhs_is_primitive {
         // Safe operation between constraint types: return result directly
-        quote! {
+        code! {
             impl #trait_ident<#rhs_alias> for #lhs_alias {
                 type Output = #output_alias;
 
@@ -114,13 +113,13 @@ fn generate_arithmetic_impl(
         if is_reversed {
             // Primitive on left (e.g., f64 + FinF64)
             let fin_type = if lhs_alias == "f32" {
-                quote! { FinF32 }
+                code! { FinF32 }
             } else {
-                quote! { FinF64 }
+                code! { FinF64 }
             };
             // Division needs special handling to check for infinity
             if op == ArithmeticOp::Div {
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -137,7 +136,7 @@ fn generate_arithmetic_impl(
                     }
                 }
             } else {
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -153,13 +152,13 @@ fn generate_arithmetic_impl(
         } else {
             // Primitive on right (e.g., FinF64 + f64)
             let fin_type = if rhs_alias == "f32" {
-                quote! { FinF32 }
+                code! { FinF32 }
             } else {
-                quote! { FinF64 }
+                code! { FinF64 }
             };
             // Division needs special handling to check for infinity
             if op == ArithmeticOp::Div {
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -176,7 +175,7 @@ fn generate_arithmetic_impl(
                     }
                 }
             } else {
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -192,7 +191,7 @@ fn generate_arithmetic_impl(
         }
     } else if op == ArithmeticOp::Div {
         // Division between constraint types: result may be infinity, return NaN error
-        quote! {
+        code! {
             impl #trait_ident<#rhs_alias> for #lhs_alias {
                 type Output = Result<#output_alias, FloatError>;
 
@@ -208,7 +207,7 @@ fn generate_arithmetic_impl(
         }
     } else {
         // Potentially failing operation between constraint types: return Result
-        quote! {
+        code! {
             impl #trait_ident<#rhs_alias> for #lhs_alias {
                 type Output = Result<#output_alias, FloatError>;
 

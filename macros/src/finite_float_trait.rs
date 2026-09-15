@@ -3,14 +3,13 @@
 //! Generates the `FiniteFloat` trait and its implementations for all generated types.
 
 use proc_macro2::TokenStream;
-use quote::quote;
 
 use crate::config::TypeConfig;
 use crate::generator::{for_all_constraint_float_types, make_type_alias};
 
 /// Generates `IntoF64` trait and its implementations for f32 and f64
 fn generate_into_f64_trait() -> TokenStream {
-    quote! {
+    code! {
         /// Type marker trait: types that can be converted to f64
         pub trait IntoF64 {
             /// Converts the value to f64
@@ -40,7 +39,7 @@ fn generate_into_f64_trait() -> TokenStream {
 pub fn generate_finite_float_trait(_config: &TypeConfig) -> TokenStream {
     let into_f64_trait = generate_into_f64_trait();
 
-    quote! {
+    code! {
         #into_f64_trait
 
         /// Common trait for all finite floating-point types
@@ -109,7 +108,7 @@ pub fn generate_finite_float_impls(config: &TypeConfig) -> TokenStream {
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         let struct_name = make_type_alias(type_name, float_type);
 
-        quote! {
+        code! {
             impl FiniteFloat for #struct_name {
                 fn new<T: IntoF64>(value: T) -> Result<Self, FloatError> {
                     let f64_val = value.into_f64();
@@ -123,7 +122,7 @@ pub fn generate_finite_float_impls(config: &TypeConfig) -> TokenStream {
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

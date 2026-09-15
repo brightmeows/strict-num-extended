@@ -1,6 +1,6 @@
 //! F32/F64 conversion method generator module
 
-use quote::{format_ident, quote};
+use quote::format_ident;
 
 use crate::config::TypeConfig;
 use crate::generator::{for_all_constraint_float_types, make_type_alias};
@@ -14,10 +14,10 @@ pub fn generate_as_f32_primitive_methods(config: &TypeConfig) -> proc_macro2::To
 
         // Only F32 types need as_f32
         if *float_type != "f32" {
-            return quote! {};
+            return code! {};
         }
 
-        quote! {
+        code! {
             impl #type_alias {
                 /// Returns the inner f32 value
                 #[must_use]
@@ -28,7 +28,7 @@ pub fn generate_as_f32_primitive_methods(config: &TypeConfig) -> proc_macro2::To
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -40,10 +40,10 @@ pub fn generate_as_f64_primitive_methods(config: &TypeConfig) -> proc_macro2::To
 
         // Only F64 types need as_f64
         if *float_type != "f64" {
-            return quote! {};
+            return code! {};
         }
 
-        quote! {
+        code! {
             impl #type_alias {
                 /// Returns the inner f64 value
                 #[must_use]
@@ -54,7 +54,7 @@ pub fn generate_as_f64_primitive_methods(config: &TypeConfig) -> proc_macro2::To
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -68,10 +68,10 @@ pub fn generate_as_f32_type_methods(config: &TypeConfig) -> proc_macro2::TokenSt
 
         // Only F32 types need as_f32_type
         if *float_type != "f32" {
-            return quote! {};
+            return code! {};
         }
 
-        quote! {
+        code! {
             impl #type_alias {
                 /// Creates a clone of the current F32 type instance
                 ///
@@ -85,7 +85,7 @@ pub fn generate_as_f32_type_methods(config: &TypeConfig) -> proc_macro2::TokenSt
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -97,14 +97,14 @@ pub fn generate_as_f64_type_methods(config: &TypeConfig) -> proc_macro2::TokenSt
 
         // Only F32 types need as_f64_type
         if *float_type != "f32" {
-            return quote! {};
+            return code! {};
         }
 
         // Generate the corresponding F64 type name
         let f64_type_alias = make_type_alias(type_name, &format_ident!("f64"));
 
         // Generate conversion logic for F32 types
-        quote! {
+        code! {
             impl #type_alias {
                 /// Converts to the corresponding F64 type
                 ///
@@ -123,7 +123,7 @@ pub fn generate_as_f64_type_methods(config: &TypeConfig) -> proc_macro2::TokenSt
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -137,14 +137,14 @@ pub fn generate_try_into_f32_type_methods(config: &TypeConfig) -> proc_macro2::T
 
         // Only F64 types need try_into_f32_type
         if *float_type != "f64" {
-            return quote! {};
+            return code! {};
         }
 
         // Generate the corresponding F32 type name
         let f32_type_alias = make_type_alias(type_name, &format_ident!("f32"));
 
         // Generate conversion logic for F64 types
-        quote! {
+        code! {
             impl #type_alias {
                 /// Attempts to convert to the corresponding F32 type
                 ///
@@ -164,7 +164,7 @@ pub fn generate_try_into_f32_type_methods(config: &TypeConfig) -> proc_macro2::T
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

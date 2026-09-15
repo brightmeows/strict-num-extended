@@ -72,7 +72,6 @@
 //! ```
 
 use proc_macro2::TokenStream as TokenStream2;
-use quote::quote;
 
 use crate::config::{ArithmeticOp, TypeConfig, get_standard_arithmetic_ops};
 use crate::generator::generate_arithmetic_for_all_types;
@@ -96,7 +95,7 @@ fn generate_pattern_lhs_op_option_rhs(
          _| {
             if result.is_safe {
                 // Safe operation: base returns concrete type, so Option operation returns Option<Output>
-                quote! {
+                code! {
                     impl #trait_ident<Option<#rhs_alias>> for #lhs_alias {
                         type Output = Option<#output_alias>;
 
@@ -113,7 +112,7 @@ fn generate_pattern_lhs_op_option_rhs(
                 }
             } else {
                 // Fallible operation: base returns Result, so Option operation returns Result<Output, FloatError>
-                quote! {
+                code! {
                     impl #trait_ident<Option<#rhs_alias>> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 

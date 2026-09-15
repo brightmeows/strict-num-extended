@@ -4,9 +4,10 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 use proc_macro::TokenStream;
-use quote::quote;
 use syn::parse_macro_input;
 
+#[macro_use]
+mod helpers;
 mod arithmetic;
 mod comparison;
 mod config;
@@ -50,7 +51,7 @@ use unary_ops::{
 
 /// Generates common definitions (constants)
 fn generate_common_definitions() -> proc_macro2::TokenStream {
-    quote! {
+    code! {
         use core::marker::PhantomData;
         use core::ops::{Add, Sub, Mul, Div, Neg};
 
@@ -75,7 +76,7 @@ fn generate_common_definitions() -> proc_macro2::TokenStream {
 
 /// Generates the `FloatError` type and its trait implementations
 fn generate_error_type() -> proc_macro2::TokenStream {
-    quote! {
+    code! {
         /// Errors that can occur when creating or operating on finite floats
         #[derive(Debug, Clone, Copy, PartialEq, Eq)]
         #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -113,14 +114,14 @@ fn generate_error_type() -> proc_macro2::TokenStream {
 fn generate_constraint_markers(config: &TypeConfig) -> proc_macro2::TokenStream {
     let markers = config.constraints.iter().map(|constraint| {
         let name = &constraint.name;
-        quote! {
+        code! {
             #[doc(hidden)]
             #[derive(Debug, Clone, Copy)]
             pub(crate) struct #name;
         }
     });
 
-    quote! {
+    code! {
         #(#markers)*
     }
 }
@@ -196,7 +197,7 @@ pub fn generate_finite_float_types(input: TokenStream) -> TokenStream {
     all_code.push(generate_type_aliases(&config));
 
     // Combine all code
-    let expanded = quote! {
+    let expanded = code! {
         #(#all_code)*
     };
 

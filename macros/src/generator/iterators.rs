@@ -3,7 +3,6 @@
 //! Contains iterator functions for generating arithmetic operations across type combinations.
 
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
-use quote::quote;
 
 use super::type_utils::make_type_alias;
 use crate::config::{ArithmeticOp, ArithmeticResult, TypeConfig};
@@ -27,13 +26,13 @@ use crate::config::{ArithmeticOp, ArithmeticResult, TypeConfig};
 ///
 /// ```ignore
 /// let ops = [
-///     (ArithmeticOp::Add, "Add", "add", quote! { + }),
-///     (ArithmeticOp::Sub, "Sub", "sub", quote! { - }),
+///     (ArithmeticOp::Add, "Add", "add", code! { + }),
+///     (ArithmeticOp::Sub, "Sub", "sub", code! { - }),
 /// ];
 ///
 /// generate_arithmetic_for_all_types(config, &ops, |lhs, rhs, output, trait_ident, method_ident, op_symbol, result, op| {
 ///     // Generate specific trait implementation
-///     quote! {
+///     code! {
 ///         impl #trait_ident for #lhs {
 ///             // ...
 ///         }
@@ -101,7 +100,7 @@ where
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -231,7 +230,7 @@ where
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

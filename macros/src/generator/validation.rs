@@ -3,7 +3,6 @@
 //! Contains functions for building runtime validation expressions based on constraint definitions.
 
 use proc_macro2::Ident;
-use quote::quote;
 
 use crate::config::ConstraintDef;
 
@@ -15,7 +14,7 @@ pub fn build_validation_expr(
     let mut checks = Vec::new();
 
     // 1. Base check: is_finite()
-    checks.push(quote! { value.is_finite() });
+    checks.push(code! { value.is_finite() });
 
     // 2. Boundary checks
     if let Some(lower) = constraint_def.bounds.lower {
@@ -30,11 +29,11 @@ pub fn build_validation_expr(
 
     // 3. Zero exclusion check (if not covered by bounds)
     if constraint_def.excludes_zero && needs_explicit_zero_check(constraint_def) {
-        checks.push(quote! { value != 0.0 });
+        checks.push(code! { value != 0.0 });
     }
 
     // Combine all checks with &&
-    quote! {
+    code! {
         #(#checks)&&*
     }
 }
@@ -54,31 +53,31 @@ fn build_bound_check(
 
     // Determine the bound value to use (no substitution for strict inequalities)
     let bound_value = if is_f32 {
-        quote! { (#bound as f64) }
+        code! { (#bound as f64) }
     } else {
-        quote! { #bound }
+        code! { #bound }
     };
 
     // f32 needs to convert value to f64 for comparison
     let value_expr = if is_f32 {
-        quote! { (value as f64) }
+        code! { (value as f64) }
     } else {
-        quote! { value }
+        code! { value }
     };
 
     // Generate the appropriate comparison expression
     if is_lower {
         if use_strict {
             // For > x with excludes_zero and x == 0, use > to exclude 0.0 and -0.0
-            quote! { #value_expr > #bound_value }
+            code! { #value_expr > #bound_value }
         } else {
-            quote! { #value_expr >= #bound_value }
+            code! { #value_expr >= #bound_value }
         }
     } else if use_strict {
         // For < x with excludes_zero and x == 0, use < to exclude 0.0 and -0.0
-        quote! { #value_expr < #bound_value }
+        code! { #value_expr < #bound_value }
     } else {
-        quote! { #value_expr <= #bound_value }
+        code! { #value_expr <= #bound_value }
     }
 }
 

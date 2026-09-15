@@ -5,7 +5,6 @@
 //! - `signum()`: Sign function that always returns Symmetric type
 
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
-use quote::quote;
 
 use crate::config::{Bounds, ConstraintDef, Sign, TypeConfig};
 use crate::generator::{find_constraint_def, make_type_alias};
@@ -119,7 +118,7 @@ pub fn generate_abs_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let output_alias = make_type_alias(&output_type, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 impl #type_alias {
                     /// Computes the absolute value.
                     ///
@@ -153,7 +152,7 @@ pub fn generate_abs_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -186,7 +185,7 @@ pub fn generate_signum_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let output_alias = make_type_alias(&output_type, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 impl #type_alias {
                     /// Computes the sign function.
                     ///
@@ -228,7 +227,7 @@ pub fn generate_signum_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -261,7 +260,7 @@ pub fn generate_sin_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let output_alias = make_type_alias(&output_type, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 #[cfg(feature = "std")]
                 impl #type_alias {
                     /// Computes the sine of the value.
@@ -300,7 +299,7 @@ pub fn generate_sin_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -333,7 +332,7 @@ pub fn generate_cos_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let output_alias = make_type_alias(&output_type, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 #[cfg(feature = "std")]
                 impl #type_alias {
                     /// Computes the cosine of the value.
@@ -372,7 +371,7 @@ pub fn generate_cos_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }
@@ -399,7 +398,7 @@ pub fn generate_tan_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let output_alias = make_type_alias(&output_type, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 #[cfg(feature = "std")]
                 impl #type_alias {
                     /// Computes the tangent of the value.
@@ -442,7 +441,7 @@ pub fn generate_tan_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

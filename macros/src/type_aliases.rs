@@ -3,7 +3,6 @@
 //! Generates type aliases for constraint types.
 
 use quote::format_ident;
-use quote::quote;
 
 use crate::config::TypeConfig;
 
@@ -29,7 +28,7 @@ pub fn generate_type_aliases(config: &TypeConfig) -> proc_macro2::TokenStream {
         ]
     });
 
-    quote! {
+    code! {
         // Type aliases
         #(#aliases)*
     }
@@ -46,7 +45,7 @@ fn generate_single_alias(
     let alias_struct_name = format_ident!("{}{}", alias_name, float_type_upper);
     let doc_string = format!("Type alias for [`{original_struct_name}`]");
 
-    quote! {
+    code! {
         #[doc = #doc_string]
         pub type #alias_struct_name = #original_struct_name;
     }

@@ -1,7 +1,6 @@
 //! Unary negation operation module
 
 use proc_macro2::TokenStream as TokenStream2;
-use quote::quote;
 
 use crate::config::TypeConfig;
 use crate::generator::{find_constraint_def, make_type_alias};
@@ -25,7 +24,7 @@ pub fn generate_neg_impls(config: &TypeConfig) -> TokenStream2 {
             let type_alias = make_type_alias(type_name, float_type);
             let neg_type_alias = make_type_alias(neg_constraint_name, float_type);
 
-            impls.push(quote! {
+            impls.push(code! {
                 impl Neg for #type_alias {
                     type Output = #neg_type_alias;
 
@@ -43,7 +42,7 @@ pub fn generate_neg_impls(config: &TypeConfig) -> TokenStream2 {
         }
     }
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

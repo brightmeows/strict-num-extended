@@ -1,7 +1,5 @@
 //! Comparison and formatting trait implementations module
 
-use quote::quote;
-
 use crate::config::TypeConfig;
 use crate::generator::{for_all_constraint_float_types, make_type_alias};
 
@@ -9,7 +7,7 @@ use crate::generator::{for_all_constraint_float_types, make_type_alias};
 pub fn generate_comparison_traits() -> proc_macro2::TokenStream {
     // This is now a placeholder that returns empty code
     // Comparison traits are generated for each concrete type in arithmetic.rs and other modules
-    quote! {}
+    code! {}
 }
 
 /// Generates comparison and formatting traits for all concrete types
@@ -17,7 +15,7 @@ pub fn generate_concrete_comparison_traits(config: &TypeConfig) -> proc_macro2::
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         let struct_name = make_type_alias(type_name, float_type);
 
-        quote! {
+        code! {
             impl PartialEq for #struct_name {
                 fn eq(&self, other: &Self) -> bool {
                     self.value == other.value
@@ -54,7 +52,7 @@ pub fn generate_concrete_comparison_traits(config: &TypeConfig) -> proc_macro2::
         }
     });
 
-    quote! {
+    code! {
         #(#impls)*
     }
 }

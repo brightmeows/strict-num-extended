@@ -7,7 +7,7 @@ use crate::generator::{
     filter_constraint_types_by_float, find_constraint_def, for_all_constraint_float_types,
 };
 use proc_macro2::Ident;
-use quote::{format_ident, quote};
+use quote::format_ident;
 
 /// Generate all From/TryFrom implementations
 pub fn generate_conversion_traits(config: &TypeConfig) -> proc_macro2::TokenStream {
@@ -34,7 +34,7 @@ pub fn generate_conversion_traits(config: &TypeConfig) -> proc_macro2::TokenStre
     // 7. f64 → F32 constraint type (TryFrom)
     all_code.push(generate_f64_to_f32_constraint_tryfrom(config));
 
-    quote! { #(#all_code)* }
+    code! { #(#all_code)* }
 }
 
 /// Check if source constraint is contained in target constraint (always safe)
@@ -71,7 +71,7 @@ fn generate_constraint_to_primitive_from(config: &TypeConfig) -> proc_macro2::To
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         let alias = format_ident!("{}{}", type_name, float_type.to_string().to_uppercase());
 
-        quote! {
+        code! {
             impl From<#alias> for #float_type {
                 #[inline]
                 fn from(value: #alias) -> Self {
@@ -81,7 +81,7 @@ fn generate_constraint_to_primitive_from(config: &TypeConfig) -> proc_macro2::To
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }
 
 /// Generate: Primitive → Constraint type (`TryFrom`)
@@ -89,7 +89,7 @@ fn generate_primitive_to_constraint_tryfrom(config: &TypeConfig) -> proc_macro2:
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         let alias = format_ident!("{}{}", type_name, float_type.to_string().to_uppercase());
 
-        quote! {
+        code! {
             impl TryFrom<#float_type> for #alias {
                 type Error = FloatError;
 
@@ -101,7 +101,7 @@ fn generate_primitive_to_constraint_tryfrom(config: &TypeConfig) -> proc_macro2:
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }
 
 /// Generate: Constraint type → Constraint type (From/TryFrom)
@@ -149,7 +149,7 @@ fn generate_constraint_to_constraint_traits(config: &TypeConfig) -> proc_macro2:
 
                 if is_safe {
                     // From implementation
-                    all_impls.push(quote! {
+                    all_impls.push(code! {
                         impl From<#src_alias> for #dst_alias {
                             #[inline]
                             fn from(value: #src_alias) -> Self {
@@ -159,7 +159,7 @@ fn generate_constraint_to_constraint_traits(config: &TypeConfig) -> proc_macro2:
                     });
                 } else {
                     // TryFrom implementation
-                    all_impls.push(quote! {
+                    all_impls.push(code! {
                         impl TryFrom<#src_alias> for #dst_alias {
                             type Error = FloatError;
 
@@ -174,20 +174,20 @@ fn generate_constraint_to_constraint_traits(config: &TypeConfig) -> proc_macro2:
         }
     }
 
-    quote! { #(#all_impls)* }
+    code! { #(#all_impls)* }
 }
 
 /// Generate: F32 → F64 (From)
 fn generate_f32_to_f64_from(config: &TypeConfig) -> proc_macro2::TokenStream {
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         if *float_type != "f32" {
-            return quote! {};
+            return code! {};
         }
 
         let f32_alias = format_ident!("{}F32", type_name);
         let f64_alias = format_ident!("{}F64", type_name);
 
-        quote! {
+        code! {
             impl From<#f32_alias> for #f64_alias {
                 #[inline]
                 fn from(value: #f32_alias) -> Self {
@@ -197,20 +197,20 @@ fn generate_f32_to_f64_from(config: &TypeConfig) -> proc_macro2::TokenStream {
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }
 
 /// Generate: F64 → F32 (`TryFrom`)
 fn generate_f64_to_f32_tryfrom(config: &TypeConfig) -> proc_macro2::TokenStream {
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         if *float_type != "f64" {
-            return quote! {};
+            return code! {};
         }
 
         let f32_alias = format_ident!("{}F32", type_name);
         let f64_alias = format_ident!("{}F64", type_name);
 
-        quote! {
+        code! {
             impl TryFrom<#f64_alias> for #f32_alias {
                 type Error = FloatError;
 
@@ -222,19 +222,19 @@ fn generate_f64_to_f32_tryfrom(config: &TypeConfig) -> proc_macro2::TokenStream 
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }
 
 /// Generate: f32 → F64 constraint type (`TryFrom`)
 fn generate_f32_to_f64_constraint_tryfrom(config: &TypeConfig) -> proc_macro2::TokenStream {
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         if *float_type != "f64" {
-            return quote! {};
+            return code! {};
         }
 
         let f64_alias = format_ident!("{}F64", type_name);
 
-        quote! {
+        code! {
             impl TryFrom<f32> for #f64_alias {
                 type Error = FloatError;
 
@@ -246,19 +246,19 @@ fn generate_f32_to_f64_constraint_tryfrom(config: &TypeConfig) -> proc_macro2::T
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }
 
 /// Generate: f64 → F32 constraint type (`TryFrom`)
 fn generate_f64_to_f32_constraint_tryfrom(config: &TypeConfig) -> proc_macro2::TokenStream {
     let impls = for_all_constraint_float_types(config, |type_name, float_type, _| {
         if *float_type != "f32" {
-            return quote! {};
+            return code! {};
         }
 
         let f32_alias = format_ident!("{}F32", type_name);
 
-        quote! {
+        code! {
             impl TryFrom<f64> for #f32_alias {
                 type Error = FloatError;
 
@@ -270,5 +270,5 @@ fn generate_f64_to_f32_constraint_tryfrom(config: &TypeConfig) -> proc_macro2::T
         }
     });
 
-    quote! { #(#impls)* }
+    code! { #(#impls)* }
 }

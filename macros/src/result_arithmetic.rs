@@ -26,7 +26,6 @@
 //! ```
 
 use proc_macro2::TokenStream as TokenStream2;
-use quote::quote;
 
 use crate::config::{ArithmeticOp, TypeConfig, get_standard_arithmetic_ops};
 use crate::generator::generate_arithmetic_for_all_types;
@@ -49,7 +48,7 @@ pub fn generate_result_arithmetic_impls(config: &TypeConfig) -> TokenStream2 {
     let pattern2_impls = generate_pattern_result_lhs_op_rhs(config, &ops);
     // let pattern3_impls = generate_pattern_result_lhs_op_result_rhs(config, &ops);
 
-    quote! {
+    code! {
         #pattern1_impls
         #pattern2_impls
         // #pattern3_impls
@@ -75,7 +74,7 @@ fn generate_pattern_lhs_op_result_rhs(
          _| {
             if result.is_safe {
                 // Safe operation: base returns concrete type, wrap in Ok
-                quote! {
+                code! {
                     impl #trait_ident<Result<#rhs_alias, FloatError>> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -89,7 +88,7 @@ fn generate_pattern_lhs_op_result_rhs(
                 }
             } else {
                 // Fallible operation: base returns Result, directly propagate
-                quote! {
+                code! {
                     impl #trait_ident<Result<#rhs_alias, FloatError>> for #lhs_alias {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -125,7 +124,7 @@ fn generate_pattern_result_lhs_op_rhs(
          _| {
             if result.is_safe {
                 // Safe operation: base returns concrete type, wrap in Ok
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for Result<#lhs_alias, FloatError> {
                         type Output = Result<#output_alias, FloatError>;
 
@@ -139,7 +138,7 @@ fn generate_pattern_result_lhs_op_rhs(
                 }
             } else {
                 // Fallible operation: base returns Result, directly propagate
-                quote! {
+                code! {
                     impl #trait_ident<#rhs_alias> for Result<#lhs_alias, FloatError> {
                         type Output = Result<#output_alias, FloatError>;
 

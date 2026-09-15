@@ -3,7 +3,6 @@
 //! Intelligently generates type and method documentation comments based on constraint definitions
 
 use proc_macro2::{Ident, TokenStream};
-use quote::quote;
 
 use crate::config::{Bounds, ConstraintDef, Sign};
 use core::f64::consts::PI;
@@ -28,7 +27,7 @@ pub fn generate_struct_doc(
     let type_description =
         generate_type_description(&struct_name, type_name, float_type, constraint_def);
 
-    quote! {
+    code! {
         concat!("A ", #float_bits, "-bit floating-point number representing a **", #type_name_str, "** value.\n\n",
                "# Constraints\n\n",
                "This type enforces the following constraints:\n",
@@ -691,7 +690,7 @@ pub fn generate_new_method_doc(
     let valid_example = generate_valid_example(float_type, constraint_def);
     let (invalid_example, invalid_reason) = generate_invalid_example(float_type, constraint_def);
 
-    quote! {
+    code! {
         concat!("Creates a new ", #type_name_str, " value.\n\n",
                "The value must satisfy the constraint: ", #constraint_desc, ".\n\n",
                "# Examples\n\n",
