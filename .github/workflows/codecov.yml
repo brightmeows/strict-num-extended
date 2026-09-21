@@ -29,7 +29,7 @@ jobs:
             --all-features --doctests \
             --lcov --output-path lib.lcov
       - name: Upload macro source coverage to Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./macro-source.lcov
           flags: macro-source
@@ -38,7 +38,7 @@ jobs:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload library coverage to Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./lib.lcov
           flags: lib
