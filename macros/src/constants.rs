@@ -175,11 +175,7 @@ fn constant_matches_constraint(value: f64, constraint_def: &ConstraintDef) -> bo
     }
 
     // 3. Check zero exclusion
-    if constraint_def.excludes_zero && value == 0.0 {
-        return false;
-    }
-
-    true
+    !(constraint_def.excludes_zero && value == 0.0)
 }
 
 /// Generates constants for all types
