@@ -1,7 +1,5 @@
 //! From/TryFrom trait tests
 
-#![expect(clippy::float_cmp)]
-
 use std::convert::TryFrom;
 
 // 1. Constraint type → Primitive

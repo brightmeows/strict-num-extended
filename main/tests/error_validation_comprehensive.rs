@@ -6,7 +6,7 @@
 //! 3. Verify error message accuracy
 //! 4. Ensure compile-time and runtime consistency
 
-#![expect(clippy::float_cmp, clippy::uninlined_format_args, clippy::panic)]
+#![expect(clippy::uninlined_format_args, clippy::panic)]
 
 use strict_num_extended::*;
 

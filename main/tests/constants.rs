@@ -1,7 +1,5 @@
 //! Constant tests
 
-#![expect(clippy::float_cmp)]
-
 use strict_num_extended::*;
 
 #[test]

@@ -1,15 +1,18 @@
 //! Tests for arithmetic operations between constrained types and primitive types
 
 // Strict floating-point comparisons, unwrap usage, and legacy numeric constants in test code are justified
-#![expect(clippy::legacy_numeric_constants, clippy::float_cmp)]
 
 use strict_num_extended::*;
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::f32::{INFINITY as F32_INFINITY, NAN as F32_NAN, NEG_INFINITY as F32_NEG_INFINITY};
-    use std::f64::{INFINITY, NAN, NEG_INFINITY};
+    const F32_INFINITY: f32 = f32::INFINITY;
+    const F32_NAN: f32 = f32::NAN;
+    const F32_NEG_INFINITY: f32 = f32::NEG_INFINITY;
+    const INFINITY: f64 = f64::INFINITY;
+    const NAN: f64 = f64::NAN;
+    const NEG_INFINITY: f64 = f64::NEG_INFINITY;
 
     // ========================================================================
     // Basic Arithmetic Tests with f64
