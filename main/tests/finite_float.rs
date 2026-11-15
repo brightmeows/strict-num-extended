@@ -5,8 +5,8 @@
 // Strict floating-point comparisons, unwrap usage, and variable shadowing in test code are justified
 #![expect(
     clippy::shadow_unrelated,
-    clippy::float_cmp,
-    clippy::uninlined_format_args
+    clippy::uninlined_format_args,
+    clippy::float_cmp_const
 )]
 
 use strict_num_extended::*;

@@ -3,7 +3,7 @@
 //! Tests for type-safe arithmetic operations with Result<T, `FloatError`> types.
 
 // Strict floating-point comparisons, unwrap usage, and variable shadowing in test code are justified
-#![expect(clippy::float_cmp, clippy::items_after_statements)]
+#![expect(clippy::items_after_statements)]
 
 use strict_num_extended::*;
 

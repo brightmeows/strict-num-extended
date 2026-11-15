@@ -6,7 +6,7 @@
 //! 3. Test error handling and meaningful error messages
 //! 4. Verify that the original string is preserved in errors
 
-#![expect(clippy::float_cmp, clippy::panic)]
+#![expect(clippy::panic)]
 
 use strict_num_extended::*;
 
