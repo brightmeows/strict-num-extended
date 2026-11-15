@@ -3,7 +3,7 @@
 //! Tests for type-safe arithmetic operations between different constraint types.
 
 // Strict floating-point comparisons, unwrap usage, and variable shadowing in test code are justified
-#![expect(clippy::many_single_char_names, clippy::float_cmp)]
+#![expect(clippy::many_single_char_names, clippy::float_cmp_const)]
 
 use strict_num_extended::*;
 

@@ -1,6 +1,6 @@
 //! F32/F64 type conversion tests
 
-#![expect(clippy::shadow_unrelated, clippy::float_cmp)]
+#![expect(clippy::shadow_unrelated)]
 
 use strict_num_extended::{FloatError, *};
 

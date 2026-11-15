@@ -3,7 +3,7 @@
 //! These tests only run when the "serde" feature is enabled.
 
 #![cfg(feature = "serde")]
-#![expect(clippy::shadow_unrelated, clippy::float_cmp)] // Test functions commonly use the same local variable names
+#![expect(clippy::shadow_unrelated)] // Test functions commonly use the same local variable names
 
 use strict_num_extended::*;
 
