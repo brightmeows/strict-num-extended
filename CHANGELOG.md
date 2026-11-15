@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.5.1](https://github.com/brightmeows/strict-num-extended/compare/strict-num-extended-v0.5.0...strict-num-extended-v0.5.1) - 2026-11-15
+
+### Bug Fixes
+- **(clippy)** 按 std feature 收窄测试的 float_cmp 期望 ([#122](https://github.com/MiyakoMeow/strict-num-extended/pull/122))
+
+
+### Features
+- **(lint)** sync clippy config ([#97](https://github.com/MiyakoMeow/strict-num-extended/pull/97))
+
+
+### Other
+- add Codeberg mirror sync and refresh stale owner references ([#102](https://github.com/MiyakoMeow/strict-num-extended/pull/102))
+- 补齐 Dependabot 分组并升级 codecov ([#120](https://github.com/MiyakoMeow/strict-num-extended/pull/120))
+
+
+### Tests
+- use assert_eq! in the NonNegativeF32 comparison test ([#110](https://github.com/MiyakoMeow/strict-num-extended/pull/110))
+
+## [0.5.1](https://github.com/brightmeows/strict-num-extended/compare/strict-num-extended-macros-v0.5.0...strict-num-extended-macros-v0.5.1) - 2026-11-15
+
+### Features
+- **(lint)** sync clippy config ([#97](https://github.com/MiyakoMeow/strict-num-extended/pull/97))
+
+
+### Other
+- 补齐 Dependabot 分组并升级 codecov ([#120](https://github.com/MiyakoMeow/strict-num-extended/pull/120))
+
 ## [0.5.0](https://github.com/MiyakoMeow/strict-num-extended/compare/strict-num-extended-macros-v0.4.3...strict-num-extended-macros-v0.5.0) - 2026-01-12
 
 ### Bug Fixes
